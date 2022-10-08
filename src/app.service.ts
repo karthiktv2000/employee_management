@@ -71,8 +71,7 @@ export class AppService {
     }
   }
   public async logout(req, res) {
-    console.log(req.cookies);
     res.clearCookie('karthik');
-    res.end('u logged out');
+    res.end('User logged out sucessfuly');
   }
 }
