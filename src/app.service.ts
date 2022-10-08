@@ -49,7 +49,7 @@ export class AppService {
             const payload = { email: req.body.email, name: req.body.name };
             const token = this.jwtService.sign(payload, { expiresIn: '1h' });
             console.log(token);
-            res.cookie('karthik', token);
+            res.cookie('logout_cookie', token);
             res.send(`${req.body.email} logged in sucessfuly`);
           } else {
             res.send('invalid password');
@@ -60,7 +60,7 @@ export class AppService {
   }
   public async dashboard(req, res) {
     try {
-      const ver = this.jwtService.verify(req.cookies.karthik);
+      const ver = this.jwtService.verify(req.cookies.logout_cookie);
       if (!ver) {
         throw new UnauthorizedException();
       }
@@ -71,7 +71,7 @@ export class AppService {
     }
   }
   public async logout(req, res) {
-    res.clearCookie('karthik');
+    res.clearCookie('logout_cookie');
     res.end('User logged out sucessfuly');
   }
 }
