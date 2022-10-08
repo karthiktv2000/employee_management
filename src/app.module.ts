@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { employee, employeeSchema } from './employee.schema';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { employee, employeeSchema } from './employee.schema';
     MongooseModule.forFeature([
       { name: employee.name, schema: employeeSchema },
     ]),
+    JwtModule.register({ secret: 'hard!to-guess_secret' }),
   ],
   controllers: [AppController],
   providers: [AppService],

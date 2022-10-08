@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { AppService } from './app.service';
+import { registrationDTO } from './dto/employee.dto';
 
 @Controller()
 export class AppController {
@@ -11,8 +12,25 @@ export class AppController {
   }
   @Post()
   public async postemployee(
-    @Body() empdetails: { readonly name: string; readonly email: string },
+    @Body() empdetails: registrationDTO,
+    @Res() res: Response,
   ) {
-    return await this.appService.postemployee(empdetails);
+    return await this.appService.postemployee(empdetails, res);
+  }
+  @Post('login')
+  public async login(
+    @Body() body: { email: string; password: string },
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    return this.appService.login(body, req, res);
+  }
+  @Get('dashboard')
+  public async dashboard(@Req() req: Request, @Res() res: Response) {
+    this.appService.dashboard(req, res);
+  }
+  @Post('logout')
+  public async logout(@Req() req: Request, @Res() res: Response) {
+    this.appService.logout(req, res);
   }
 }
