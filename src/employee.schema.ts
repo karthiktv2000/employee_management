@@ -17,13 +17,13 @@ export class employee {
   @Prop({ required: true })
   phone: number;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   address: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false})
   salary: number;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   role: string;
 
   @Prop({ default: false })
