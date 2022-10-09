@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { employee, employeeDocument } from './employee.schema';
 import * as bcrypt from 'bcrypt';
-import * as cookieParser from 'cookie-parser';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -33,7 +32,7 @@ export class AppService {
           emp.save();
           res.send('Employee added sucessfuly');
         } else {
-          console.log(data);
+          // console.log(data);
           res.send(`${emp.email} is already present please login`);
         }
       },
@@ -48,9 +47,9 @@ export class AppService {
           if (result) {
             const payload = { email: req.body.email, name: req.body.name };
             const token = this.jwtService.sign(payload, { expiresIn: '1h' });
-            console.log(token);
+
             res.cookie('logout_cookie', token);
-            res.send(`${req.body.email} logged in sucessfuly`);
+            res.send(`${data[0].name} logged in sucessfuly`);
           } else {
             res.send('invalid password');
           }
@@ -62,16 +61,36 @@ export class AppService {
     try {
       const ver = this.jwtService.verify(req.cookies.logout_cookie);
       if (!ver) {
-        throw new UnauthorizedException();
+        res.status(403).end('Unauthorized access ');
       }
       const user = await this.employeeModel.findOne({ email: ver.email });
       res.send(user);
     } catch (error) {
-      throw new UnauthorizedException();
+      res.status(403).end('Unauthorized access ');
     }
   }
+  public async leave(req,res){
+    try{
+      const ver = this.jwtService.verify(req.cookies.logout_cookie);
+      if (!ver) {
+        res.status(403).end('Unauthorized access ');
+      }
+      this.employeeModel.findOneAndUpdate({email: ver.email},{$set:{leave:true}},{new:true},(err,result)=>{
+        if (err){console.log(err)}
+        else{console.log(result)}
+      })
+      res.status(200).end("request sent to admin")
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   public async logout(req, res) {
     res.clearCookie('logout_cookie');
     res.end('User logged out sucessfuly');
   }
 }
+
+
+
+
