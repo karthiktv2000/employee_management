@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Req, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { registrationDTO } from './dto/employee.dto';
 
@@ -29,8 +29,12 @@ export class AppController {
   public async dashboard(@Req() req: Request, @Res() res: Response) {
     this.appService.dashboard(req, res);
   }
-  @Post('logout')
+  @Get('logout')
   public async logout(@Req() req: Request, @Res() res: Response) {
     this.appService.logout(req, res);
+  }
+  @Put('leave')
+  public async leave(@Req() req: Request, @Res() res: Response) {
+    this.appService.leave(req, res);
   }
 }
