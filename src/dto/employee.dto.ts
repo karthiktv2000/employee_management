@@ -7,3 +7,5 @@ export class registrationDTO {
   salary: number;
   role: string;
 }
+
+//
