@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { registrationDTO } from './dto/employee.dto';
 import { leaveService } from './leave.service';
@@ -9,9 +18,9 @@ import { leaveDto } from './dto/leave.dto';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  public getemployee() {
-    return this.appService.getemployee();
+  @Get(':em')
+  public getemployee(@Param('em') em: string) {
+    return this.appService.getemployee(em);
   }
   @Post()
   public async postemployee(
@@ -32,6 +41,7 @@ export class AppController {
   public async dashboard(@Req() req: Request, @Res() res: Response) {
     this.appService.dashboard(req, res);
   }
+
   
   @Get('leaves')
   public async leaves(@Req() req: Request, @Res() res: Response) {
@@ -53,9 +63,13 @@ export class AppController {
     return (err)
   }
       
-  @Post('logout')
+  @Get('logout')
   public async logout(@Req() req: Request, @Res() res: Response) {
     this.appService.logout(req, res);
+  }
+  @Put('leave')
+  public async leave(@Req() req: Request, @Res() res: Response) {
+    this.appService.leave(req, res);
   }
 }
 
