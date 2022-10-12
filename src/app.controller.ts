@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Put, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { registrationDTO } from './dto/employee.dto';
 
@@ -6,9 +15,9 @@ import { registrationDTO } from './dto/employee.dto';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  public getemployee() {
-    return this.appService.getemployee();
+  @Get(':em')
+  public getemployee(@Param('em') em: string) {
+    return this.appService.getemployee(em);
   }
   @Post()
   public async postemployee(

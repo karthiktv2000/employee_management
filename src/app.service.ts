@@ -1,4 +1,4 @@
-import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { employee, employeeDocument } from './employee.schema';
@@ -11,8 +11,8 @@ export class AppService {
     @InjectModel(employee.name) private employeeModel: Model<employeeDocument>,
     private readonly jwtService: JwtService,
   ) {}
-  public async getemployee() {
-    return await this.employeeModel.find().exec();
+  public async getemployee(em) {
+    return await this.employeeModel.find({ _id: em }).exec();
   }
   public async postemployee(
     newemp: {
@@ -47,7 +47,10 @@ export class AppService {
               res.cookie('logout_cookie', token);
               res.send(`${req.body.email} logged in sucessfuly`);
             } else {
-              res.send('invalid password');
+              throw new HttpException(
+                `Invalid password try again`,
+                HttpStatus.NOT_FOUND,
+              );
             }
           });
         }
