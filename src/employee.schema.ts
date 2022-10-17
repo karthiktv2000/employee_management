@@ -26,8 +26,8 @@ export class employee {
   @Prop({ required: true })
   role: string;
 
-  @Prop({ default: false })
-  leave: boolean;
+  @Prop({ default: 10 })
+  availableLeaves: number;
 }
 
 export const employeeSchema = SchemaFactory.createForClass(employee);
